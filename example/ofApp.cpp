@@ -44,7 +44,7 @@ void ofApp::onSequencerNote(ofxMidiFighterTwister::SequencerNoteEventArgs & note
 
 	if (note.on){
 		kits[note.voice].getInstrumentAtIndex(instrumentIndex).setVolume(vol);
-		//instruments[note.voice].setSpeed(notePitchPercent);
+		//kits[note.voice].getInstrumentAtIndex(instrumentIndex).setSpeed(vol * 2);
 		kits[note.voice].getInstrumentAtIndex(instrumentIndex).play();
 	}
 }
