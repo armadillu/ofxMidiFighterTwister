@@ -30,9 +30,35 @@ public:
 		int buttonID; // [0 .. 5] ; starting bottom left clockwise
 	};
 
+	struct SequencerNoteEventArgs{
+		int voice; //[0..3] (mapped to the 4 columns of the MFT)
+		bool on; //noteOn / noteOff
+		int pitch;
+		int velocity;
+		string toString(){
+			return "Note" + string(on?"On":"Off") + " Voice:" + ofToString(voice) + " Pitch: " +
+			ofToString(pitch) + " Velocity: " + ofToString(velocity);
+		}
+	};
+
+	struct SequencerFilterEventArgs{
+		int voice; //[0..3]
+		float value; // [0..1]
+	};
+
 	void setup();
 
-	void update();
+	// for the sequencer feature
+	void update(); //send midi clock to MFT, in case you want to use the sequecner feature
+
+	void sequencerPlay(){
+		midiOut.sendControlChange(8, 14, 127);
+	}
+
+	void sequencerPause(){
+		midiOut.sendControlChange(8, 14, 0);
+	}
+
 	void draw();
 
 	//light up the ring around the encoders
@@ -41,6 +67,15 @@ public:
 	//Set the hue of the colored LED segment under each encoder
 	//0 is blue, 0.25 is green, 0.5 is yellow, 0.75 is red, 1.0 is purplish
 	void setEncoderColor(int encoder, float hue); // hue[0..1] 127 values
+
+	//manually change selected bank (same as pressing middle side buttons)
+	void setBank(int bank);  //[0..3] allowed
+
+	void setSequencerMode(){
+		midiOut.sendControlChange(4, 0, 127);
+		midiOut.sendControlChange(4, 1, 127);
+	}
+
 
 	//Ring Animations
 	void setEncoderRingAnimationStrobe(int encoder, unsigned char strobe); //strobe[0..7]  possible values
@@ -60,6 +95,11 @@ public:
 	ofEvent<EncoderEventArgs>		eventEncoder;
 	ofEvent<PushSwitchEventArgs>	eventPushSwitch;
 	ofEvent<SideButtonEventArgs>	eventSideButton;
+
+	ofEvent<SequencerNoteEventArgs>	eventSequencerNote;
+	ofEvent<SequencerFilterEventArgs>	eventSequencerFilter;
+
+
 
 private:
 
