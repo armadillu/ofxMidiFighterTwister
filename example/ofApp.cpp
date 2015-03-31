@@ -2,7 +2,10 @@
 
 void ofApp::setup(){
 
-	ofSetFrameRate(60);
+	ofSetVerticalSync(false);
+	framerate = 30;
+
+	ofSetFrameRate(framerate);
 
 	twister.setup();
 
@@ -22,6 +25,11 @@ void ofApp::update(){
 	twister.update();
 }
 
+void ofApp::draw(){
+
+	ofDrawBitmapStringHighlight("framerate: " + ofToString(framerate), 20, 20 );
+
+}
 
 void ofApp::onEncoderUpdate(ofxMidiFighterTwister::EncoderEventArgs & a){
 	ofLogNotice() << "Encoder '" << a.ID << "' Event! val: " << a.value;
@@ -53,7 +61,6 @@ void ofApp::onSequencerFilter(ofxMidiFighterTwister::SequencerFilterEventArgs & 
 	//ofLogNotice() << "onSequencerFilter voice " << filter.voice << " filter value: "<< filter.value;
 
 	float speedMap = ofMap(filter.value, 0, 1, 0.1, 1.9, true);
-
 	for(int i = 0; i < kits[filter.voice].getNumInstruments(); i++){
 		kits[filter.voice].getInstrumentAtIndex(i).setSpeed(speedMap);
 	}
@@ -89,21 +96,26 @@ void ofApp::keyPressed(int key){
 			//turn off all animations
 			case '0': twister.setEncoderAnimationsOff(encoderID); break;
 
-			//set active bank page
-			case 'q': twister.setBank(0);break;
-			case 'w': twister.setBank(1);break;
-			case 'e': twister.setBank(2);break;
-			case 'r': twister.setBank(3);break;
-
-			//sequencer control
-			case '.': twister.sequencerPlay(); break;
-			case ',': twister.sequencerPause(); break;
-
-			case ' ': twister.setSequencerMode(); break;
-				
 			default:
 				break;
 		}
+	}
+
+	switch (key) {
+			//set active bank page
+		case 'q': twister.setBank(0);break;
+		case 'w': twister.setBank(1);break;
+		case 'e': twister.setBank(2);break;
+		case 'r': twister.setBank(3);break;
+
+			//sequencer control
+		case '.': twister.sequencerPlay(); break;
+		case ',': twister.sequencerPause(); break;
+
+		case ' ': twister.setSequencerMode(); break;
+
+		case '+': framerate += 5; ofSetFrameRate(framerate); break;
+		case '-': framerate -= 5; ofSetFrameRate(framerate); break;
 	}
 }
 

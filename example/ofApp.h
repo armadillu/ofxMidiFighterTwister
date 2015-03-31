@@ -37,6 +37,7 @@ class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void update();
+		void draw();
 
 		void keyPressed(int key);
 
@@ -50,4 +51,6 @@ class ofApp : public ofBaseApp{
 		void onSequencerFilter(ofxMidiFighterTwister::SequencerFilterEventArgs &);
 
 		InstrumentKit kits[4];
+
+	int framerate;
 };
