@@ -46,15 +46,12 @@ void ofxMidiFighterTwister::newMidiMessage(ofxMidiMessage& msg){
 			break;
 
 		case 4: //side buttons
-			if(msg.status == MIDI_CONTROL_CHANGE){
-				PushSwitchEventArgs args;
-				args.ID = msg.control;
-				args.value = msg.value;
-				ofNotifyEvent(eventPushSwitch, args, this);
-			}
+            SideButtonEventArgs args;
+            args.buttonID = msg.control;
+            ofNotifyEvent(eventSideButton, args, this);
 			break;
 
-		case 8:{ //sequencer
+		case 8: { //sequencer
 			SequencerNoteEventArgs note;
 			int voice = msg.pitch%4;
 			if (msg.status == MIDI_NOTE_ON || msg.status == MIDI_NOTE_OFF){

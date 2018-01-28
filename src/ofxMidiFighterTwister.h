@@ -76,6 +76,13 @@ public:
 		midiOut.sendControlChange(4, 1, 127);
 	}
 
+    static int relativeMidi(int midi) {
+        return (midi == MIDI_INCREASE) ? 1 : -1;
+    }
+    
+    static float mapMidi(int midi, float targetMin, float targetMax) {
+        return ofMap(midi, MIDI_MIN, MIDI_MAX, targetMin, targetMax);
+    }
 
 	//Ring Animations
 	void setEncoderRingAnimationStrobe(int encoder, unsigned char strobe); //strobe[0..7]  possible values
@@ -99,7 +106,11 @@ public:
 	ofEvent<SequencerNoteEventArgs>	eventSequencerNote;
 	ofEvent<SequencerFilterEventArgs>	eventSequencerFilter;
 
-
+    static int const MIDI_DECREASE = 63;
+    static int const MIDI_INCREASE = 65;
+    static int const MIDI_MIN = 0;
+    static int const MIDI_MAX = 127;
+    static int const NUM_ENCODERS = 64;
 
 private:
 
