@@ -47,6 +47,10 @@ public:
 	};
 
 	void setup();
+    void setup(int port);
+    void unset();
+    bool isOpen();
+    int getPort();
 
 	// for the sequencer feature
 	void update(); //send midi clock to MFT, in case you want to use the sequecner feature
