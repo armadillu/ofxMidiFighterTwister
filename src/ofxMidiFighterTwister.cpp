@@ -17,6 +17,26 @@ void ofxMidiFighterTwister::setup(){
 	midiIn.addListener(this);
 }
 
+void ofxMidiFighterTwister::setup(int port){
+	midiOut.openPort(port);
+	midiIn.openPort(port);
+	midiIn.addListener(this);
+}
+
+void ofxMidiFighterTwister::unset(){
+    midiOut.closePort();
+    midiIn.closePort();
+    midiIn.removeListener(this);
+}
+
+bool launchpad::isOpen() {
+    return midiIn.isOpen() && midiOut.isOpen();
+}
+
+int launchpad::getPort() {
+    return midiIn.getPort();
+}
+
 void ofxMidiFighterTwister::update(){
 	midiOut.sendMidiByte(MIDI_TIME_CLOCK);
 }
